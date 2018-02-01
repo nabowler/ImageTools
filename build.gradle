@@ -1,0 +1,31 @@
+// make libraries available to sub-projects
+apply from: "${rootDir}/libraries.gradle"
+
+// set repositories on all projects.
+allprojects {
+    group='rel.wob.nah.tan'
+    version="0.0.1"
+    
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+}
+
+
+// find and configure subprojects
+ext {
+    coreProjects = subprojects.findAll {
+        p -> true
+    }
+}
+
+configure(project.coreProjects) {
+	apply plugin: 'java'
+	apply plugin: 'eclipse'
+	
+	dependencies {
+        compile(libraries.slf4j)
+    }
+}
+

@@ -1,0 +1,10 @@
+ext {
+    javacvVersion='1.4'
+    slf4jVersion='1.7.25'
+    
+    libraries = [
+        javacv: "org.bytedeco:javacv-platform:${javacvVersion}",
+        slf4j: "org.slf4j:slf4j-api:${slf4jVersion}",
+        slf4jSimple: "org.slf4j:slf4j-simple:${slf4jVersion}"
+    ]
+}

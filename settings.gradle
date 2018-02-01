@@ -1,0 +1,3 @@
+rootProject.name = 'ImageTools'
+include 'ImageTools-core'
+include 'ImageTools-app'

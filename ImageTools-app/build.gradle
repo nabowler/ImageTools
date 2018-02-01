@@ -1,0 +1,10 @@
+apply plugin: 'application'
+
+mainClassName = "rel.row.nah.tan.imagetools.app.Main"
+applicationName = "ImageTools"
+
+dependencies {
+    compile project(':ImageTools-core')
+    compile(libraries.slf4jSimple)
+}
+
