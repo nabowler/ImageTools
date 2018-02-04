@@ -1,7 +1,7 @@
 /**
  *
  */
-package rel.wob.nah.tan.imagetools.etc;
+package rel.wob.nah.tan.imagetools.monitor.progress;
 
 /**
  * @author Nathan

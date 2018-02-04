@@ -8,8 +8,6 @@ import java.awt.image.BufferedImage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import rel.wob.nah.tan.imagetools.etc.NopProgressMonitor;
-import rel.wob.nah.tan.imagetools.etc.ProgressMonitor;
 import rel.wob.nah.tan.imagetools.exception.CreationException;
 import rel.wob.nah.tan.imagetools.exception.SourceException;
 import rel.wob.nah.tan.imagetools.source.FixedSizeImageSource;
@@ -29,21 +27,11 @@ public class MeanImageCreator {
     }
 
     public static BufferedImage generate(FixedSizeImageSource source) throws CreationException {
-        return generate(source, new NopProgressMonitor());
-    }
-
-    public static BufferedImage generate(FixedSizeImageSource source, ProgressMonitor monitor)
-            throws CreationException {
         long start = System.nanoTime();
-
-        if (monitor == null) {
-            monitor = new NopProgressMonitor();
-        }
 
         int width = source.getImageWidth();
         int height = source.getImageHeight();
         int numImages = source.getNumImages();
-        monitor.setTotalWork(numImages);
         RGBAverage[][] averages = new RGBAverage[width][height];
         for (int h = 0; h < height; h++) {
             for (int w = 0; w < width; w++) {
@@ -65,7 +53,6 @@ public class MeanImageCreator {
                     averages[w][h].add(in.getRGB(w, h));
                 }
             }
-            monitor.worked();
         }
         BufferedImage meanImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         for (int h = 0; h < height; h++) {
@@ -112,7 +99,5 @@ public class MeanImageCreator {
             int b = (int) bAvg;
             return a + r + g + b;
         }
-
     }
-
 }

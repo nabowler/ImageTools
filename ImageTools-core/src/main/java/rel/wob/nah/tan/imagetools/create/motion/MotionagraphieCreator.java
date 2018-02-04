@@ -11,8 +11,6 @@ import java.util.Map.Entry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import rel.wob.nah.tan.imagetools.etc.NopProgressMonitor;
-import rel.wob.nah.tan.imagetools.etc.ProgressMonitor;
 import rel.wob.nah.tan.imagetools.exception.CreationException;
 import rel.wob.nah.tan.imagetools.exception.SourceException;
 import rel.wob.nah.tan.imagetools.source.FixedSizeImageSource;
@@ -32,18 +30,9 @@ public class MotionagraphieCreator {
 
     public static Map<Integer, BufferedImage> generate(FixedSizeImageSource source, double... pcts)
             throws CreationException {
-        return generate(source, new NopProgressMonitor(), pcts);
-    }
-
-    public static Map<Integer, BufferedImage> generate(FixedSizeImageSource source, ProgressMonitor monitor,
-            double... pcts) throws CreationException {
         long start = System.nanoTime();
         if (pcts == null) {
             throw new NullPointerException();
-        }
-
-        if (monitor == null) {
-            monitor = new NopProgressMonitor();
         }
 
         if (pcts.length == 0) {
@@ -58,7 +47,6 @@ public class MotionagraphieCreator {
         Map<Integer, BufferedImage> outputImages = new HashMap<>();
 
         int imageHeight = source.getNumImages();
-        monitor.setTotalWork(imageHeight);
         int imageWidth = source.getImageWidth();
 
         for (double pct : pcts) {
@@ -70,7 +58,6 @@ public class MotionagraphieCreator {
         try {
             for (; y < imageHeight; y++) {
                 BufferedImage frame = source.nextImage();
-                monitor.worked();
                 if (frame == null) {
                     logger.warn("Image " + y + " is null");
                     continue;

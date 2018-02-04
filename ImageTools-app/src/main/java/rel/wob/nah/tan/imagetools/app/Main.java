@@ -16,7 +16,9 @@ import rel.wob.nah.tan.imagetools.create.math.MeanImageCreator;
 import rel.wob.nah.tan.imagetools.create.motion.MotionagraphieCreator;
 import rel.wob.nah.tan.imagetools.exception.CreationException;
 import rel.wob.nah.tan.imagetools.exception.SourceException;
+import rel.wob.nah.tan.imagetools.monitor.progress.ConsoleProgressBar;
 import rel.wob.nah.tan.imagetools.source.FixedSizeImageSource;
+import rel.wob.nah.tan.imagetools.source.FixedSizeProgressMonitoredSource;
 import rel.wob.nah.tan.imagetools.source.VideoFrameSource;
 
 /**
@@ -99,8 +101,9 @@ public class Main {
             }
         }
 
-        try (FixedSizeImageSource source = new VideoFrameSource(f)) {
-            Map<Integer, BufferedImage> images = MotionagraphieCreator.generate(source, new ConsoleProgressBar(), pcts);
+        try (FixedSizeImageSource source = new FixedSizeProgressMonitoredSource(new VideoFrameSource(f),
+                new ConsoleProgressBar())) {
+            Map<Integer, BufferedImage> images = MotionagraphieCreator.generate(source, pcts);
 
             for (Entry<Integer, BufferedImage> entry : images.entrySet()) {
                 String outputName = f.getName() + "_" + entry.getKey() + ".png";
@@ -119,8 +122,9 @@ public class Main {
      * @throws SourceException
      */
     private static void runMean(File f, String[] args) throws CreationException, IOException, SourceException {
-        try (FixedSizeImageSource source = new VideoFrameSource(f)) {
-            BufferedImage output = MeanImageCreator.generate(source, new ConsoleProgressBar());
+        try (FixedSizeImageSource source = new FixedSizeProgressMonitoredSource(new VideoFrameSource(f),
+                new ConsoleProgressBar())) {
+            BufferedImage output = MeanImageCreator.generate(source);
 
             String outputName = f.getName() + "_mean.png";
             ImageIO.write(output, "png", new File(outputName));

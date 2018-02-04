@@ -1,11 +1,10 @@
 /**
  *
  */
-package rel.wob.nah.tan.imagetools.app;
+package rel.wob.nah.tan.imagetools.monitor.progress;
 
 import java.io.IOException;
-
-import rel.wob.nah.tan.imagetools.etc.ProgressMonitor;
+import java.io.PrintStream;
 
 /**
  * @author Nathan
@@ -18,11 +17,22 @@ public class ConsoleProgressBar implements ProgressMonitor {
 
     private String lastOutput = "";
 
+    private PrintStream printStream;
+
     /**
      *
      */
     public ConsoleProgressBar() {
+        this(System.out);
+    }
+
+    /**
+     *
+     * @param ps
+     */
+    public ConsoleProgressBar(PrintStream ps) {
         super();
+        printStream = ps;
     }
 
     @Override
@@ -49,10 +59,13 @@ public class ConsoleProgressBar implements ProgressMonitor {
                 progress.append(" ");
             }
             progress.append(pct).append("%\r");
+            if (pct == 0) {
+                progress.append("\n");
+            }
             if (!progress.toString().equals(lastOutput)) {
                 try {
                     lastOutput = progress.toString();
-                    System.out.write(lastOutput.getBytes());
+                    printStream.write(lastOutput.getBytes());
                 } catch (IOException e) {
                     // ignore
                 }
