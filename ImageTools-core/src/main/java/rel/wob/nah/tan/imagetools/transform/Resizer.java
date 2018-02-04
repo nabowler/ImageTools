@@ -13,13 +13,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
- * Creates resized images.
+ * {@link Transformer} that resizes images.
  *
  * TODO: untested.
  *
  * @author Nathan
  */
-public class Resizer {
+public class Resizer implements Transformer {
 
     public static final Map<RenderingHints.Key, Object> HIGH_QUALITY;
 
@@ -68,7 +68,8 @@ public class Resizer {
         hints = renderingHints;
     }
 
-    public BufferedImage resize(BufferedImage src) {
+    @Override
+    public BufferedImage transform(BufferedImage src) {
         BufferedImage resized = new BufferedImage(w, h,
                 src.getType() != 0 ? src.getType() : BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = resized.createGraphics();

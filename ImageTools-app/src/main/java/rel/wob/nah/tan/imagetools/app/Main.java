@@ -17,9 +17,9 @@ import rel.wob.nah.tan.imagetools.create.motion.MotionagraphieCreator;
 import rel.wob.nah.tan.imagetools.exception.CreationException;
 import rel.wob.nah.tan.imagetools.exception.SourceException;
 import rel.wob.nah.tan.imagetools.monitor.progress.ConsoleProgressBar;
-import rel.wob.nah.tan.imagetools.source.FixedSizeImageSource;
-import rel.wob.nah.tan.imagetools.source.FixedSizeProgressMonitoredSource;
-import rel.wob.nah.tan.imagetools.source.VideoFrameSource;
+import rel.wob.nah.tan.imagetools.source.fixedsize.FixedSizeImageSource;
+import rel.wob.nah.tan.imagetools.source.fixedsize.FixedSizeProgressMonitoredSource;
+import rel.wob.nah.tan.imagetools.source.fixedsize.VideoFrameSource;
 
 /**
  * TODO:

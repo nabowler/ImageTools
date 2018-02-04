@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import rel.wob.nah.tan.imagetools.exception.CreationException;
 import rel.wob.nah.tan.imagetools.exception.SourceException;
-import rel.wob.nah.tan.imagetools.source.FixedSizeImageSource;
+import rel.wob.nah.tan.imagetools.source.fixedsize.FixedSizeImageSource;
 
 /**
  * Creates Motionagraphie images from a {@link FixedSizeImageSource}.

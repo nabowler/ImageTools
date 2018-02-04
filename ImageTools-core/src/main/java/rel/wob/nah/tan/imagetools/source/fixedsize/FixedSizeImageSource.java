@@ -1,7 +1,9 @@
 /**
  *
  */
-package rel.wob.nah.tan.imagetools.source;
+package rel.wob.nah.tan.imagetools.source.fixedsize;
+
+import rel.wob.nah.tan.imagetools.source.ImageSource;
 
 /**
  * A source of images that are guaranteed to be the same size..

@@ -1,7 +1,7 @@
 /**
  *
  */
-package rel.wob.nah.tan.imagetools.source;
+package rel.wob.nah.tan.imagetools.source.fixedsize;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
