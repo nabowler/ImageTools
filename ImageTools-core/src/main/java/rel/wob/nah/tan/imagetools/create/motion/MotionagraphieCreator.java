@@ -18,6 +18,20 @@ import rel.wob.nah.tan.imagetools.source.fixedsize.FixedSizeImageSource;
 /**
  * Creates Motionagraphie images from a {@link FixedSizeImageSource}.
  *
+ * Motionagraphie is an art style developed by Pat Little, or at least taught to
+ * me by him. It uses the same single row of pixels from each image, stacking
+ * them into the output image. This image shows how the perspective of a moving
+ * subject captured in the source images changes over time.
+ *
+ * The classical setup is to rotate a subject in small, discrete steps and take
+ * a photograph at each step. The smaller the step size, the smoother the curves
+ * will be in your creation.
+ *
+ * An alternative setup is to rotate a subject on a low (< 2) rpm turntable and
+ * record the subject with a high framerate. As with before, the lower the rpm
+ * and the higher the framerate, the smoother the curves will be in your
+ * creation.
+ *
  * @author Nathan
  *
  */

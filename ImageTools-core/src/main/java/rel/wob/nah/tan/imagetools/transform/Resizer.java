@@ -70,6 +70,10 @@ public class Resizer implements Transformer {
 
     @Override
     public BufferedImage transform(BufferedImage src) {
+        if (src.getWidth() == w && src.getHeight() == h) {
+            return src;
+        }
+
         BufferedImage resized = new BufferedImage(w, h,
                 src.getType() != 0 ? src.getType() : BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = resized.createGraphics();

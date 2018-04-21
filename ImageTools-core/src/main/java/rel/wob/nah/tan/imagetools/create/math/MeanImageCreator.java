@@ -14,7 +14,8 @@ import rel.wob.nah.tan.imagetools.source.fixedsize.FixedSizeImageSource;
 
 /**
  * Create a single image where each pixel is the average of the corresponding
- * pixels of each source image.
+ * pixels of each source image. The channels of the pixels are averaged
+ * independently.
  *
  * @author Nathan
  *

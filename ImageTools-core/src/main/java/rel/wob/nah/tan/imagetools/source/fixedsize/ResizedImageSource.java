@@ -19,6 +19,7 @@ import rel.wob.nah.tan.imagetools.transform.Resizer;
  * @author Nathan
  */
 public class ResizedImageSource extends TransformedImageSource implements FixedSizeImageSource {
+    private Resizer resizer;
 
     private ResizedImageSource(ImageSource source, int width, int height, Map<RenderingHints.Key, Object> resizeHints) {
         this(source, new Resizer(width, height, resizeHints));
@@ -26,6 +27,7 @@ public class ResizedImageSource extends TransformedImageSource implements FixedS
 
     private ResizedImageSource(ImageSource source, Resizer res) {
         super(source, res);
+        resizer = res;
     }
 
     public static ResizedImageSource forQuality(ImageSource source, int width, int height) {
@@ -42,5 +44,15 @@ public class ResizedImageSource extends TransformedImageSource implements FixedS
 
     public static ResizedImageSource forResizer(ImageSource source, Resizer resizer) {
         return new ResizedImageSource(source, resizer);
+    }
+
+    @Override
+    public int getImageWidth() {
+        return resizer.getW();
+    }
+
+    @Override
+    public int getImageHeight() {
+        return resizer.getH();
     }
 }

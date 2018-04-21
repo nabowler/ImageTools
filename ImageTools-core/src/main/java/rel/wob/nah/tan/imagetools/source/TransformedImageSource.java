@@ -25,6 +25,8 @@ public class TransformedImageSource implements ImageSource {
      */
     public TransformedImageSource(ImageSource src, Transformer trans) {
         super();
+        source = src;
+        transformer = trans;
 
     }
 

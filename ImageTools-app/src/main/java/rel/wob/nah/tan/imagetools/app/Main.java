@@ -7,25 +7,35 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.imageio.ImageIO;
+import javax.imageio.stream.FileImageOutputStream;
+import javax.imageio.stream.ImageOutputStream;
 
+import net.kroo.elliot.GifSequenceWriter;
+import rel.wob.nah.tan.imagetools.create.math.FrameMeanImageCreator;
 import rel.wob.nah.tan.imagetools.create.math.MeanImageCreator;
 import rel.wob.nah.tan.imagetools.create.motion.MotionagraphieCreator;
 import rel.wob.nah.tan.imagetools.exception.CreationException;
 import rel.wob.nah.tan.imagetools.exception.SourceException;
 import rel.wob.nah.tan.imagetools.monitor.progress.ConsoleProgressBar;
+import rel.wob.nah.tan.imagetools.source.MemoryImageSource;
 import rel.wob.nah.tan.imagetools.source.fixedsize.FixedSizeImageSource;
 import rel.wob.nah.tan.imagetools.source.fixedsize.FixedSizeProgressMonitoredSource;
+import rel.wob.nah.tan.imagetools.source.fixedsize.ResizedImageSource;
 import rel.wob.nah.tan.imagetools.source.fixedsize.VideoFrameSource;
 
 /**
  * TODO:
  * <ul>
+ * <li>Real command line argument processing</li>
  * <li>Allow for resizing</li>
- * <li>Run progress.</li>
+ * <li><del>Run progress.</del></li>
+ * <li>Time elapsed.</li>
+ * <li>Estimated Time Remaining.</li>
  * <li>Any un-implemented creation modes</li>
  * <li>Flag on input file to specify source type, if non-video sources are
  * implemented.</li>
@@ -64,8 +74,11 @@ public class Main {
             case MOTION:
                 runMotion(f, args);
                 break;
+            case FRAME_MEAN:
+                runFrameMean(f, args);
+                break;
             default:
-                System.out.println("This mode is unimplemented.");
+                System.err.println("This mode is unimplemented.");
                 System.exit(2);
             }
         } catch (Throwable e) {
@@ -131,6 +144,44 @@ public class Main {
         }
     }
 
+    private static void runFrameMean(File f, String[] args) throws IOException, SourceException, CreationException {
+        int runs = 1;
+        if (args.length > 2) {
+            runs = Integer.parseInt(args[2]);
+        }
+        double framerate = 24.0D;
+        List<BufferedImage> output;
+        int width = 640;
+        int height = 480;
+        try (VideoFrameSource vfs = new VideoFrameSource(f);
+                FixedSizeImageSource source = new FixedSizeProgressMonitoredSource(vfs, new ConsoleProgressBar())) {
+            try {
+                framerate = vfs.getFramerate();
+            } catch (Exception e) {
+                System.err.println("Can't determine framerate. Using default value");
+            }
+            width = source.getImageWidth();
+            height = source.getImageHeight();
+            output = FrameMeanImageCreator.generate(source);
+        }
+        for (int i = 1; i < runs && output.size() > 1; i++) {
+            try (FixedSizeImageSource source = ResizedImageSource.forDefaults(new MemoryImageSource(output), width,
+                    height)) {
+                output = FrameMeanImageCreator.generate(source);
+            }
+        }
+
+        String outputName = f.getName() + "_frame_mean_" + runs + "_runs.gif";
+        int timeBetweenFrames = (int) (1.0D / framerate * 1000);
+        try (ImageOutputStream iOut = new FileImageOutputStream(new File(outputName));
+                GifSequenceWriter gifWriter = new GifSequenceWriter(iOut, BufferedImage.TYPE_INT_ARGB,
+                        timeBetweenFrames, true)) {
+            for (BufferedImage img : output) {
+                gifWriter.writeToSequence(img);
+            }
+        }
+    }
+
     private static void printHelp() {
         System.out.println("arguments: mode InputFile (mode args)");
         System.out.println("  available modes: " + Arrays.deepToString(RunModes.values()));
@@ -138,7 +189,7 @@ public class Main {
     }
 
     private static enum RunModes {
-        MOTION, MEAN
+        MOTION, MEAN, FRAME_MEAN
     }
 
 }

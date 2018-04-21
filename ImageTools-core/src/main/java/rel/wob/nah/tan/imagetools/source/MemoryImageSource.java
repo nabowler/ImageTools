@@ -36,6 +36,11 @@ public class MemoryImageSource implements ImageSource {
         }
     }
 
+    public MemoryImageSource(List<BufferedImage> srcList) {
+        super();
+        images = new ArrayList<>(srcList);
+    }
+
     @Override
     public void close() throws IOException {
         images.clear();

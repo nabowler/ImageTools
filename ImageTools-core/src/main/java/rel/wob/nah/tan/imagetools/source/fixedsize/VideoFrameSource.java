@@ -32,6 +32,8 @@ public class VideoFrameSource implements FixedSizeImageSource {
 
     private Java2DFrameConverter converter;
 
+    private double framerate;
+
     public VideoFrameSource(URL url) throws SourceException {
         super();
 
@@ -57,6 +59,7 @@ public class VideoFrameSource implements FixedSizeImageSource {
         frameGrabber = new FFmpegFrameGrabber(tempFile);
         try {
             frameGrabber.start();
+            framerate = frameGrabber.getFrameRate();
         } catch (Exception e) {
             throw new SourceException("Cannot start FrameGrabber.", e);
         }
@@ -68,6 +71,7 @@ public class VideoFrameSource implements FixedSizeImageSource {
         frameGrabber = new FFmpegFrameGrabber(f);
         try {
             frameGrabber.start();
+            framerate = frameGrabber.getFrameRate();
         } catch (Exception e) {
             throw new SourceException("Cannot start FrameGrabber.", e);
         }
@@ -114,6 +118,10 @@ public class VideoFrameSource implements FixedSizeImageSource {
 
         int numFrames = frameGrabber.getLengthInFrames();
         return numFrames;
+    }
+
+    public double getFramerate() {
+        return framerate;
     }
 
     @Override
