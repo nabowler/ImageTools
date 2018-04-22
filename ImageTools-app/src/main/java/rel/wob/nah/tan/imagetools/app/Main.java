@@ -153,22 +153,25 @@ public class Main {
         List<BufferedImage> output;
         int width = 640;
         int height = 480;
-        try (VideoFrameSource vfs = new VideoFrameSource(f);
-                FixedSizeImageSource source = new FixedSizeProgressMonitoredSource(vfs, new ConsoleProgressBar())) {
+        ConsoleProgressBar progress = new ConsoleProgressBar();
+        progress.setTotalWork(runs);
+        try (VideoFrameSource source = new VideoFrameSource(f)) {
             try {
-                framerate = vfs.getFramerate();
+                framerate = source.getFramerate();
             } catch (Exception e) {
                 System.err.println("Can't determine framerate. Using default value");
             }
             width = source.getImageWidth();
             height = source.getImageHeight();
             output = FrameMeanImageCreator.generate(source);
+            progress.worked();
         }
         for (int i = 1; i < runs && output.size() > 1; i++) {
             try (FixedSizeImageSource source = ResizedImageSource.forDefaults(new MemoryImageSource(output), width,
                     height)) {
                 output = FrameMeanImageCreator.generate(source);
             }
+            progress.worked();
         }
 
         String outputName = f.getName() + "_frame_mean_" + runs + "_runs.gif";

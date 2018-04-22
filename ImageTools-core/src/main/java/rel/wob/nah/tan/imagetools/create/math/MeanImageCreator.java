@@ -30,6 +30,14 @@ public class MeanImageCreator {
     public static BufferedImage generate(FixedSizeImageSource source) throws CreationException {
         long start = System.nanoTime();
 
+        BufferedImage meanImage = generateInternal(source);
+        long elapsed = System.nanoTime() - start;
+        long elapsedSeconds = (long) (elapsed / 1e9);
+        logger.info("Mean generated in " + elapsedSeconds + "seconds.");
+        return meanImage;
+    }
+
+    static BufferedImage generateInternal(FixedSizeImageSource source) throws CreationException {
         int width = source.getImageWidth();
         int height = source.getImageHeight();
         int numImages = source.getNumImages();
@@ -61,9 +69,6 @@ public class MeanImageCreator {
                 meanImage.setRGB(w, h, averages[w][h].get());
             }
         }
-        long elapsed = System.nanoTime() - start;
-        long elapsedSeconds = (long) (elapsed / 1e9);
-        logger.info("Mean generated in " + elapsedSeconds + "seconds.");
         return meanImage;
     }
 

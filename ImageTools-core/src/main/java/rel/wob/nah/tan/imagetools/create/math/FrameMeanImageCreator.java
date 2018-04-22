@@ -51,8 +51,8 @@ public class FrameMeanImageCreator {
                 if (next == null) {
                     continue;
                 }
-                outImages.add(MeanImageCreator
-                        .generate(ResizedImageSource.forDefaults(new MemoryImageSource(Arrays.asList(prev, next)),
+                outImages.add(MeanImageCreator.generateInternal(
+                        ResizedImageSource.forDefaults(new MemoryImageSource(Arrays.asList(prev, next)),
                                 source.getImageWidth(), source.getImageHeight())));
                 prev = next;
             }
@@ -62,7 +62,7 @@ public class FrameMeanImageCreator {
 
         long elapsed = System.nanoTime() - start;
         long elapsedSeconds = (long) (elapsed / 1e9);
-        logger.info("Mean generated in " + elapsedSeconds + "seconds.");
+        logger.info("FrameMean generated in " + elapsedSeconds + "seconds.");
         return outImages;
     }
 }
