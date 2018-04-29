@@ -62,7 +62,7 @@ public class Main {
         File f = new File(args[1]);
 
         if (!f.isFile()) {
-            System.err.println("Cannot find " + args[0]);
+            System.err.println("Cannot find " + args[1]);
             System.exit(1);
         }
 
